@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import CardList from "../components/CardList";
 import SearchBox from "../components/SearchBox";
 import Scroll from "../components/Scroll";
+import ErrorBoundry from "../components/ErrorBoundry";
+import "./App.css";
 import { robots } from "../robots";
 
 class App extends Component {
@@ -9,11 +11,6 @@ class App extends Component {
     robots: [],
     searchField: "",
   };
-
-  constructor() {
-    super();
-    console.log("CONSTRUCTOR");
-  }
 
   componentDidMount() {
     this.setState({ robots });
@@ -29,8 +26,6 @@ class App extends Component {
       robot.name.toLowerCase().includes(searchField.toLowerCase())
     );
 
-    console.log("RENDER");
-
     return !robots.length ? (
       <h1>Loading</h1>
     ) : (
@@ -41,7 +36,9 @@ class App extends Component {
         ></img>
         <SearchBox onSearch={this.handleSearch}></SearchBox>
         <Scroll>
-          <CardList robots={filteredRobots}></CardList>
+          <ErrorBoundry>
+            <CardList robots={filteredRobots}></CardList>
+          </ErrorBoundry>
         </Scroll>
       </div>
     );
